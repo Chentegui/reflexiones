@@ -1,0 +1,554 @@
+---
+output:
+  html_document:
+     df_print: paged
+  theme: Tactile
+  highlight: github
+  prettydoc::html_pretty: null
+  pdf_document: default
+  word_document: default
+---
+
+```{css,echo=FALSE}
+
+h1a {
+    font-family: MajritTx,serif;
+    color: #003876;
+}
+
+
+
+h1b {
+    font-family: MajritTx,serif;
+    color: #111;
+}
+
+h1b::after{
+    display: block;
+    content: '';
+    margin-top: 10px;
+    border-bottom: 1px solid #000;
+    width: 15%;
+}
+
+h1b::before{
+    display: block;
+    content: '';
+    margin-top: 10px;
+    border-bottom: 1px solid #000;
+    width: 90%;
+}
+
+
+
+h2 {
+    font-family: MajritTx,serif;
+    color: #000;
+}
+
+
+h2::after{
+    display: block;
+    content: '';
+    margin-top: 10px;
+    border-bottom: 1px solid #000;
+    width: 10%;
+}
+
+
+p {
+ font-family: MajritTxRoman,serif;
+    color: #191919
+}
+
+
+h3 {
+  text-align: center;
+}
+
+h2 {
+font-family: MajritTx,serif;
+  color: #111;
+}
+
+
+h4 {
+font-family: MajritTx,serif;
+  text-align: center;
+  color: #003876;
+}
+
+```
+
+```{css my-header-colors, echo = FALSE}
+.page-header {
+    background-image: linear-gradient(120deg, white, white);
+}
+```
+```{=html}
+<style>
+body {
+text-align: justify}
+</style>
+```
+
+
+
+```{r, warning=FALSE, include=FALSE}
+library(tidyverse)
+library(crosstalk)
+library(ggplot2)
+library(plotly)
+library(vembedr)
+library(cat)
+
+Sys.setlocale("LC_ALL", "de_DE.UTF-8")
+
+General <- readxl::read_excel(
+  "desempleo_Joven_adultosb.xlsx",
+  sheet = "General"
+  )|>
+  tidyr::pivot_longer( cols = -c(Ano, Desagragacion), 
+                       names_to = "Indicador", values_to = "Valor")|>
+  filter(!Desagragacion %in% c("Población sin categoría",
+                               "Familiar no remunerado",
+                               "Patrono o socio activo") &Ano %in% c(2015:2022))|>
+  mutate( key=as.character( row_number()))
+
+
+
+Joven <- readxl::read_excel("desempleo_Joven_adultosb.xlsx", 
+                            sheet = "Joven")|>
+  tidyr::pivot_longer( cols = -c(Ano, Desagragacion, Descripcion), 
+                       names_to = "Indicador", values_to = "Valor")|>
+  filter(!Desagragacion %in% c("Población sin categoría",
+                               "Familiar no remunerado",
+                               "Patrono o socio activo") &  Ano %in% c(2015:2022))  |>
+  mutate( key=as.character( row_number()))
+
+#_______________________________________________________________________________________________________________
+ocpdg<-dplyr:: filter(General, Indicador %in% c("Tasa de ocupación" ,  "Cantidad de ocupados" ))
+ocpd1g<-SharedData$new(ocpdg, key=~key , group="ocupadosg")
+
+
+Ocupaciong<- ocpd1g |>
+  plot_ly(x=~Ano, y=~Valor, color = ~Desagragacion, legendgroup=~Desagragacion)|>
+  add_trace(type = "scatter", mode = "markers+lines")|>
+  layout( xaxis = list(title = "Año"), dragmode="orbit", clickmode="event+select",
+          legend = list(orientation = "h",  
+                        xanchor = "center", 
+                        x = 0.5, y=1.15),
+          shapes = list(type = "rect", text = 'COVID-19', fillcolor = "blue", line = list(color = "blue"),
+                        opacity = 0.2, yref="paper" , y0 =0.08, y1=.95,   x0 = 2019.75, x1 = 2020.25))
+
+
+
+#########################################################################################
+
+ocpdj<-dplyr:: filter(Joven, Indicador %in% c("Tasa de ocupación" ,  "Cantidad de ocupados" ))
+ocpd1j<-SharedData$new(ocpdj, key=~key,  group="ocupadosj")
+ocpd2j<-SharedData$new(ocpdj, key=~key , group="ocupadosj")
+
+
+Ocupacionj<- ocpd1j |>
+  plot_ly(x=~Ano, y=~Valor, color = ~Desagragacion, legendgroup=~Desagragacion)|>
+  add_trace(type = "scatter", mode = "markers+lines")|>
+  layout( xaxis = list(title = "Año"), dragmode="orbit", clickmode="event+select",
+          legend = list(orientation = "h",  
+                        xanchor = "center", 
+                        x = 0.5, y=1.15),
+          shapes = list(type = "rect", text = 'COVID-19', fillcolor = "blue", line = list(color = "blue"),
+                        opacity = 0.2, yref="paper" , y0 =0.08, y1=.95,   x0 = 2019.75, x1 = 2020.25))
+
+
+
+#_______________________________________________________________________________________________________
+infmlg<-dplyr:: filter(General, Indicador %in% c( "Tasa de informalidad", "Cantidad de informales" ))
+infml1g<-SharedData$new(infmlg, key=~key,  group="informalesg")
+
+informalidadg<- infml1g |>
+  plot_ly(x=~Ano, y=~Valor, color = ~Desagragacion, legendgroup=~Desagragacion)|>
+  add_trace(type = "scatter", mode = "markers+lines")|>
+  layout( xaxis = list(title = "Año"), dragmode="orbit", clickmode="event+select",
+          legend = list(orientation = "h",  
+                        xanchor = "center", 
+                        x = 0.5, y=1.15),
+          shapes = list(type = "rect", text = 'COVID-19', fillcolor = "blue", line = list(color = "blue"),
+                        opacity = 0.2, yref="paper" , y0 =0.08, y1=.95,   x0 = 2019.75, x1 = 2020.25))
+
+####################################################################################################
+
+infmlj<-dplyr:: filter(Joven, Indicador %in% c( "Tasa de informalidad", "Cantidad de informales" ))
+infml1j<-SharedData$new(infmlj, key=~key,  group="informalesj")
+infml2j<-SharedData$new(infmlj, key=~key , group="informalesj")
+
+
+informalidadj<- infml1j |>
+  plot_ly(x=~Ano, y=~Valor, color = ~Desagragacion, legendgroup=~Desagragacion)|>
+  add_trace(type = "scatter", mode = "markers+lines")|>
+  layout( xaxis = list(title = "Año"), dragmode="orbit", clickmode="event+select",
+          legend = list(orientation = "h",  
+                        xanchor = "center", 
+                        x = 0.5, y=1.15),
+          shapes = list(type = "rect", text = 'COVID-19', fillcolor = "blue", line = list(color = "blue"),
+                        opacity = 0.2, yref="paper" , y0 =0.08, y1=.95,   x0 = 2019.75, x1 = 2020.25))
+
+
+#________________________________________________________________________________________________________
+
+sbocpdj<-dplyr:: filter(Joven, Indicador %in% c( "Tasa de subocupación", "Cantidad de subocupados" ))
+sbocpd1j<-SharedData$new(sbocpdj, key=~key,  group="subocupadosj")
+sbocpd2j<-SharedData$new(sbocpdj, key=~key , group="subocupadosj")
+
+
+subocupacionj<- sbocpd1j |>
+  plot_ly(x=~Ano, y=~Valor, color = ~Desagragacion, legendgroup=~Desagragacion)|>
+  add_trace(type = "scatter", mode = "markers+lines")|>
+  layout( xaxis = list(title = "Año"), dragmode="orbit", clickmode="event+select",
+          legend = list(orientation = "h",  
+                        xanchor = "center", 
+                        x = 0.5, y=1.15),
+          shapes = list(type = "rect", text = 'COVID-19', fillcolor = "blue", line = list(color = "blue"),
+                        opacity = 0.2, yref="paper" , y0 =0.08, y1=.95,   x0 = 2019.75, x1 = 2020.25))
+
+
+###########################################################################333
+sbocpdg<-dplyr:: filter(General, Indicador %in% c( "Tasa de subocupación", "Cantidad de subocupados" ))
+sbocpd1g<-SharedData$new(sbocpdg, key=~key,  group="subocupadosg")
+
+
+subocupaciong<- sbocpd1g |>
+  plot_ly(x=~Ano, y=~Valor, color = ~Desagragacion, legendgroup=~Desagragacion)|>
+  add_trace(type = "scatter", mode = "markers+lines")|>
+  layout( xaxis = list(title = "Año"), dragmode="orbit", clickmode="event+select",
+          legend = list(orientation = "h",  
+                        xanchor = "center", 
+                        x = 0.5, y=1.15),
+          shapes = list(type = "rect", text = 'COVID-19', fillcolor = "blue", line = list(color = "blue"),
+                        opacity = 0.2, yref="paper" , y0 =0.08, y1=.95,   x0 = 2019.75, x1 = 2020.25))
+
+
+#__________________________________________________________________________________________________________
+dscpdj<-dplyr:: filter(Joven, Indicador %in% c( "Cantidad de desocupados", "Tasa de desocupación" )&
+                        Descripcion !="Categoria Ocupacional")
+dscpd1j<-SharedData$new(dscpdj, key=~key,  group="desocupadosj")
+dscpd2j<-SharedData$new(dscpdj, key=~key , group="desocupadosj")
+
+
+desocupacionj<- dscpd1j |>
+  plot_ly(x=~Ano, y=~Valor, color = ~Desagragacion, legendgroup=~Desagragacion)|>
+  add_trace(type = "scatter", mode = "markers+lines")|>
+  layout( xaxis = list(title = "Año"), dragmode="orbit", clickmode="event+select",
+          legend = list(orientation = "h",  
+                        xanchor = "center", 
+                        x = 0.5, y=1.15),
+          shapes = list(type = "rect", text = 'COVID-19', fillcolor = "blue", line = list(color = "blue"),
+                        opacity = 0.2, yref="paper" , y0 =0.08, y1=.95,   x0 = 2019.75, x1 = 2020.25))
+
+
+##################################################################################################3
+
+dscpdg<-dplyr:: filter(General, Indicador %in% c( "Cantidad de desocupados", "Tasa de desocupación" ))
+dscpd1g<-SharedData$new(dscpdg, key=~key,  group="desocupadosg")
+
+
+desocupaciong<- dscpd1g |>
+  plot_ly(x=~Ano, y=~Valor, color = ~Desagragacion, legendgroup=~Desagragacion)|>
+  add_trace(type = "scatter", mode = "markers+lines")|>
+  layout( xaxis = list(title = "Año"), dragmode="orbit", clickmode="event+select",
+          legend = list(orientation = "h",  
+                        xanchor = "center", 
+                        x = 0.5, y=1.15),
+          shapes = list(type = "rect", text = 'COVID-19', fillcolor = "blue", line = list(color = "blue"),
+                        opacity = 0.2, yref="paper" , y0 =0.08, y1=.95,   x0 = 2019.75, x1 = 2020.25))
+
+#_____________________________________________________________________________________________________________
+prtj<-dplyr:: filter(Joven, Indicador %in% c( "Tasa de participación", "Población económicamente activa" )&
+                      Descripcion !="Categoria Ocupacional")
+prt1j<-SharedData$new(prtj, key=~key,  group="participacionj")
+prt2j<-SharedData$new(prtj, key=~key , group="participacionj")
+
+
+participacionj<- prt1j |>
+  plot_ly(x=~Ano, y=~Valor, color = ~Desagragacion, legendgroup=~Desagragacion)|>
+  add_trace(type = "scatter", mode = "markers+lines")|>
+  layout( xaxis = list(title = "Año"),  dragmode="orbit", clickmode="event+select",
+          legend = list(orientation = "h",  
+                        xanchor = "center", 
+                        x = 0.5, y=1.15),
+          shapes = list(type = "rect", text = 'COVID-19', fillcolor = "blue", line = list(color = "blue"),
+                        opacity = 0.2, yref="paper" , y0 =0.08, y1=.95,    x0 = 2019.75, x1 = 2020.25))
+
+###########################################################################################################
+
+
+prtg<-dplyr:: filter(General, Indicador %in% c( "Tasa de participación", "Población económicamente activa" ))
+prt1g<-SharedData$new(prtg, key=~key,  group="participaciong")
+
+
+participaciong<- prt1g |>
+  plot_ly(x=~Ano, y=~Valor, color = ~Desagragacion, legendgroup=~Desagragacion)|>
+  add_trace(type = "scatter", mode = "markers+lines")|>
+  layout( xaxis = list(title = "Año"),  dragmode="orbit", clickmode="event+select",
+          legend = list(orientation = "h",  
+                        xanchor = "center", 
+                        x = 0.5, y=1.15),
+          shapes = list(type = "rect", text = 'COVID-19', fillcolor = "blue", line = list(color = "blue"),
+                        opacity = 0.2, yref="paper" , y0 =0.08, y1=.95,   x0 = 2019.75, x1 = 2020.25))
+
+
+#_________________________________________________________________________________________________________
+ingj<-dplyr:: filter(Joven, Indicador %in% c("Salario nominal", "Salario real" )&
+                      !Desagragacion %in% c("Cuenta propia"))
+ing1j<-SharedData$new(ingj, key=~key,  group="ingresosj")
+ing2j<-SharedData$new(ingj, key=~key , group="ingresosj")
+
+
+ingresosj<- ing1j |>
+  plot_ly(x=~Ano, y=~Valor, color = ~Desagragacion, legendgroup=~Desagragacion)|>
+  add_trace(type = "scatter", mode = "markers+lines")|>
+  layout( xaxis = list(title = "Año"),  dragmode="orbit", clickmode="event+select",
+          legend = list(orientation = "h",  
+                        xanchor = "center", 
+                        x = 0.5, y=1.15),
+          shapes = list(type = "rect", text = 'COVID-19', fillcolor = "blue", line = list(color = "blue"),
+                        opacity = 0.2, yref="paper" , y0 =0.08, y1=.95,   x0 = 2019.75, x1 = 2020.25))
+
+
+###########################################################################################################
+ingg<-dplyr:: filter(General, Indicador %in% c("Salario nominal", "Salario real" ))
+ing1g<-SharedData$new(ingg, key=~key,  group="ingresosg")
+
+ingresosg<- ing1g |>
+  plot_ly(x=~Ano, y=~Valor, color = ~Desagragacion, legendgroup=~Desagragacion)|>
+  add_trace(type = "scatter", mode = "markers+lines")|>
+  layout( xaxis = list(title = "Año"),  dragmode="orbit", clickmode="event+select",
+          legend = list(orientation = "h",  
+                        xanchor = "center", 
+                        x = 0.5, y=1.15),
+          shapes = list(type = "rect", text = 'COVID-19', fillcolor = "blue", line = list(color = "blue"),
+                        opacity = 0.2, yref="paper" , y0 =0.08, y1=.95,    x0 = 2019.75, x1 = 2020.25))
+
+
+```
+
+<left>
+<H1 style="font-family: MajritTx,serif;  color: #003876; " > <b> Reflexiones de Chente:el derecho a mentir </b></H1>
+
+
+
+<h1a> Vicente Luis De pena P., M.Sc.VTyP, 31 de octubre 2023</h1a> <br>
+
+
+Siempre he apostado por una manera innovadora de hacer política. No me refiero necesariamente a una "política diferente", sino a renovar sobre los cimientos de lo que ya existe, modificando de alguna manera la realidad actual. Considero esencial que los cambios puedan realizarse, tomando en cuenta lo ya establecido y construido. En este sentido, creo que existen dos elementos cruciales en la política actual que necesitamos proteger:
+
+* Primero, lo que nuestro presidente Luis Abinader describe como la característica más importante que debe tener un joven: ser honesto y no mentir con intenciones engañosas.
+
+* Segundo, estar consciente de que el principal objetivo de un joven político hoy día es contribuir de manera significativa a la construcción de una visión de país y trabajar arduamente para materializarla.
+
+Debido a una combinación de oportunidades y experiencias, y la natural despreocupación que tenemos a los 20 años acerca del paso del tiempo y sus consecuencias, ser joven parece ser uno de los actos más radicales y peligrosos que enfrentamos globalmente. Esto también pone en riesgo esos elementos esenciales que mencioné anteriormente.
+
+Imagina iniciar la construcción de los cimientos de tu futuro sin una experiencia previa significativa. A esto, añádele la avalancha de información y desinformación actual, que te obliga a enfrentar la ardua tarea de seleccionar entre un océano de opciones en una edad donde nuestra conciencia sobre los derechos empieza a florecer. Derechos que, en muchos casos, nos hacen sentir merecedores de todo el mundo.
+
+Es una etapa donde se desata nuestra dualidad de sentimientos hacia la política; experimentamos el idealismo romántico de cómo deberían ser las cosas, y por otro lado, sentimos una cierta apatía hacia la realidad concreta. Es una fase donde reconocemos la importancia del "derecho a mentir" y, en ocasiones, luchamos por este derecho, frecuentemente invocando el bien común. Además, como si todo esto no fuera suficiente, estamos destinados a ser los custodios de estos elementos cruciales. En una etapa de la vida donde, a menudo, no medimos el paso del tiempo, jugamos con el amor, la vida, las esperanzas y los sueños. Como expresó Charles Aznavour en su icónica canción:
+
+
+<h4 style="color: #003876;">  ‘Hier encore’ </h4>
+
+<div style="text-align: center;">
+
+```{r echo=FALSE,  warning=FALSE}
+embed_youtube("6gqF3Tu5Ly4",width = 500,
+height = 400,
+ratio = c("16by9"), frameborder=1)%>%
+    use_align("center")%>%
+  use_start_time("0m15")
+```
+
+</div>
+
+"Justo ayer tenía 20 años y perdí mi tiempo haciendo locuras que solo dejaron algunas arrugas en mi frente". Era una tristísima mirada al pasado, en la que el artista recordaba los tiempos en que tenía 20 años, y reconocía haber «desperdiciado su vida y sus años de juventud».
+
+
+<h1 style="color: #003876;"> Contexto</h1>
+
+
+¿Por qué les hablo de esto? Aquellos que me conocen saben que disfruto de una buena conversación, me gusta ese intercambio fluido de información que permite aprender de quienes, ya sea por casualidad o causalidad, cruzan palabras e ideas conmigo. Fue así que, el pasado miércoles 25 de octubre, decidí escuchar atentamente el debate de jóvenes políticos representantes de los partidos. Durante el mismo, uno de los participantes compartió una cifra que, a mi parecer, resultó bastante alarmante para la economía dominicana y la juventud. _(Supongo que cuando menciona CEPAL, se refiere a la [Comisión Económica para América Latina](https://www.cepal.org/sites/default/files/infographic/files/que_es_cepal_web_espanol.pdf))_.
+
+
+<h2>Lo que ellos dicen que dice la CEPAL</h2> 
+
+<h4 style="color: #003876;"> **_"La CEPAL dice que el 29%, 30% de la juventud dominicana está desempleada. Encabezamos la tasa de desempleo en toda América Latina junto con México y también en el Caribe.”_** </h4> 
+
+
+```{r echo=FALSE,  warning=FALSE}
+embed_youtube("j3bCYR7gszM",width = 500,
+height = 400,
+ratio = c("16by9"), frameborder=1)%>%
+    use_align("center")%>%
+  use_start_time("54m25")
+
+
+```
+
+Este dato, más allá de ser alarmante, inicialmente nos pareció un posible error inocente, quizás producto del bombardeo constante de información y desinformación al que todos estamos sometidos. Nos pareció ser una muestra más de desinformación involuntaria. Desde nuestra llegada al Ministerio de la Juventud, mediante la recién creada Unidad Técnica de Estudios Sobre Juventudes, hemos trabajado sistemáticamente para visualizar y analizar todos los datos relevantes que impactan a la juventud, especialmente aquellos que la CEPAL identifica como _[“la llave maestra de la inclusión social juvenil: **_Educación y Empleo._**”](https://repositorio.cepal.org/items/9065b631-5bc6-4db1-96ce-b2e9a9c2af79)_ En este sentido, hemos logrado avances significativos.
+
+Sin embargo, impulsados por un espíritu investigador y dado que el joven político expresó la cifra con notable certeza, decidimos buscar más información. Al revisar las redes, descubrimos que un comentario similar ya había sido hecho por la misma persona en junio de 2021, pero en esa ocasión, la afirmación era aún más alarmante. Según él, para ese año, **_la CEPAL establecía que el 50% de los jóvenes estaba desempleado._** Esto implicaría que, en poco más de un año, el gobierno logró reducir el desempleo juvenil en más de 20 puntos porcentuales, logro por el cual deberíamos postular al presidente Luis Abinader y su equipo económico para un Premio Nobel. Por ello, hoy mi objetivo es más que refutar tales afirmaciones, buscar aclarar y puntualizar en relación con un tema tan crucial para la economía dominicana.
+
+
+<h2> Lo que la CEPAL dice en verdad </h2>
+
+Primero, es fundamental establecer que, conforme a la [Ley 49-00 General de Juventud](https://juventud.gob.do/wp-content/uploads/2020/07/Ley-general-de-juventud-49-00-ministerio-de-la-juventud-republica-dominicana.pdf), se considera joven a cualquier individuo entre 15 y 35 años de edad; esto representa el 33.9% de la población total para el año 2023. De acuerdo con la [Encuesta Nacional Continua de Fuerza de Trabajo (ECNFT)](https://www.bancentral.gov.do/a/d/2541-encuesta-continua-encft), en el primer trimestre de 2023, los jóvenes dominicanos constituyen el 48% de la Población Económicamente Activa, es decir, más de dos millones de jóvenes en la República Dominicana que actualmente trabajan o están buscando empleo activamente. Además, estos jóvenes representan el 46.2% de la Población en Edad de Trabajar. La tasa de participación para 2022 fue de 63.1%, siendo esta la más alta desde 2014 (año en el que inició la ECNFT), y por primera vez igualó la tasa de participación de los adultos. Este hecho refuta la afirmación de que no existen políticas efectivas para la recuperación del empleo pospandemia. En términos simples, el empleo juvenil se ha recuperado más rápidamente postpandemia que en cualquier otro grupo de edad.
+
+<h4 style="color: #003876;">  Evolución de la participación laboral por grupos etarios </h4>
+```{r echo=FALSE,  warning=FALSE}
+bscols( widths = c(12,12),
+        filter_select(id = "Indicador_prtg", 
+                      label = "indicador:", 
+                      sharedData = prt1g, 
+                      group =~Indicador, multiple = F),
+        participaciong)
+```
+*Fuente: Encuesta nacional continua de fuerza de trabajo (ENCFT).*
+
+
+Enfocándonos ahora en los datos. Para discernir "qué dice realmente la CEPAL", nos dirigimos directamente a [**CEPALSTAT**](https://statistics.cepal.org/portal/cepalstat/index.html?lang=es), definido por la propia CEPAL como _"la puerta de acceso a toda la información estadística de los países de América Latina y el Caribe..."_. Aquí buscamos las tasas de desempleo por rango de edad desde 2014 hasta 2021 (los últimos datos procesados por ellos) y, tras considerar los criterios necesarios, obtenemos el siguiente gráfico, que presentamos completo:
+
+
+```{r pressure, echo=FALSE, fig.cap="A caption", out.width = '100%'}
+knitr::include_graphics("tas_deseple_cepal1.png")
+```
+
+
+<h3 style="color: #003876;">Algunas Precisiones:</h3>
+
+* La tasa de desempleo juvenil, en los últimos 8 años, jamás ha alcanzado el 30%. Ni siquiera en 2016, cuando alcanzó uno de sus picos más altos, con un 13.7%. Ese año, ambos grupos de edad, 15 - 24 y 25 - 34, superaron sus respectivos promedios en América Latina con 18.1 y 9.2, respectivamente.
+* Aunque es cierto que, debido a las fluctuaciones causadas por la salida de la pandemia, la tasa fue una de las más altas, se mantuvo 2.3 puntos porcentuales debajo del promedio de América Latina y el Caribe.
+* En el caso de México, según estos datos, México y la República Dominicana registraron algunas de las tasas de desempleo más bajas para 2020 (último año del que se tienen datos) en ambos grupos de edad.
+
+<h1 style="color: #003876;">Datos que se omitieron</h1>
+
+<h2 style="color: #003876;">Tasa de desocupación</h2>
+
+Vamos a analizar con más detalle las cifras de desempleo. Conforme a los datos desglosados por la [Unidad Técnica de Estudios Sobre Juventudes (UESJ)](https://juventud.gob.do/la-unidad/), provenientes de la ENCFT, la tasa de desempleo para 2022 fue del 8.6%, una cifra significativamente menor al 29% mencionado en el debate y, por supuesto, también bastante por debajo del 14.6% que fue el promedio en América Latina para 2021. Esta tasa también es la más baja registrada en los últimos 8 años.
+
+
+<h4 style="color: #003876;">  Evolución del desempleo por grupos etarios </h4>
+```{r echo=FALSE,  warning=FALSE}
+bscols( widths = c(12,12),
+        filter_select(id = "Indicador_dscpdg", 
+                      label = "indicador:", 
+                      sharedData = dscpd1g, 
+                      group =~Indicador, multiple = F),
+        desocupaciong)
+```
+*Fuente: Encuesta nacional continua de fuerza de trabajo (ENCFT).*
+
+<h2 style="color: #003876;"> Tasa de ocupación </h2> 
+
+La tasa de ocupación juvenil experimentó una de las recuperaciones más rápidas de la región, pasando de niveles del 51% en el 2020, fruto de la crisis, a colocarse en casi el 58% en el 2022. Nuevamente, la más alta en los últimos 8 años, lo que se tradujo en un estrechamiento de la brecha del nivel de ocupación entre adultos y jóvenes, pasando de 8 puntos porcentuales promedio, en el periodo 2015 - 2019, a 4.8 puntos porcentuales en 2022.
+
+<h4 style="color: #003876;">  Evolución de la ocupación laboral por grupos etarios </h4>
+```{r echo=FALSE,  warning=FALSE}
+bscols( widths = c(12,12),
+        filter_select(id = "Indicador_ocpdg", 
+                      label = "indicador:", 
+                      sharedData = ocpd1g, 
+                      group =~Indicador, multiple = F),
+        Ocupaciong)
+```
+*Fuente: Encuesta nacional continua de fuerza de trabajo (ENCFT).*
+
+Eso, acompañado de los niveles de subocupación más bajos en los últimos 8 años, pasando de un 6% de su ocupación en 2019, hasta el 2.4% en 2022. Es decir, los jóvenes, además de encontrar más empleos, lo hacen en lo que se prepararon. En cuanto al salario nominal, el de los jóvenes se incrementó en un 21% en comparación con el 2019.
+
+<h4 style="color: #003876;">  Evolución de la subocupación laboral por grupos etarios </h4>
+
+```{r echo=FALSE,  warning=FALSE}
+bscols( widths = c(12,12),
+        filter_select(id = "Indicador_sbocpdg", 
+                      label = "indicador:", 
+                      sharedData = sbocpd1g, 
+                      group =~Indicador, multiple = F),
+        subocupaciong)
+```
+*Fuente: Encuesta nacional continua de fuerza de trabajo (ENCFT).*
+
+<h2 style="color: black;"> Ingresos salariales </h2>
+
+El ingreso laboral por el principal trabajo en los jóvenes se incrementó un 34.5% en comparación con 2019, a una tasa de crecimiento promedio del 8% anual. Estas cifras se presentan muy por encima de las registradas en el periodo 2016–2019, cuando el ingreso juvenil presentó un incremento del 16% a una tasa de crecimiento del 3.8% en promedio anual.
+
+
+<h4 style="color: #003876;">  Evolución de los ingresos monetarios laborales mensuales de los trabajadores asalariados según grupos etarios asalariados </h4>
+```{r echo=FALSE,  warning=FALSE}
+bscols( widths = c(12,12),
+        filter_select(id = "Indicador_ingg", 
+                      label = "indicador:", 
+                      sharedData = ing1g, 
+                      group =~Indicador, multiple = F),
+        ingresosg)
+```
+*Fuente: Encuesta nacional continua de fuerza de trabajo (ENCFT).*
+<br> *Nota: Salarios reales referidos a precios de octubre 2019- septiembre 2020.* <br>
+
+Lo más fácil para un político es mentir; la filosofía, en numerosas ocasiones, lo ha permitido como una medida "para garantizar el bien común". Sin embargo, es el mismo Maquiavelo quien censura el mentir, calificándolo de despótico y elitista, propio de quienes desean conservar el poder a toda costa para mantener sus privilegios, garantizando la exclusión de la participación política de la mayoría y cerrando toda esperanza a mejoras. Esto describe la forma de gobernar durante 20 años de la historia política dominicana; no me sorprende que ahora quieran perpetuarlo desde la oposición. Pero no preocupa, pues como dice Canserbero: "Aquí las mentiras tienen patas y tarde o temprano cojean".
+
+A los jóvenes de cualquier partido, les digo, que no podemos seguir haciendo política basada en la manipulación de datos y en la construcción de realidades alternas, en las que nos consideramos Rocky Balboa y los demás charros. Debemos ser cautelosos para evitar que nuestra travesía por la política dominicana nos conduzca hacia una crisis existencial al estilo Aznavour. No abusemos más de nuestro supuesto derecho a mentir, pues ya los jóvenes identifican los niveles de las mentiras, y prefieren dejarlos hablando con el ECO y escuchar a:
+
+<h4 style="color: #003876;">  MONACO.  </h4>
+
+<div style="text-align: center;">
+
+```{r echo=FALSE,  warning=FALSE}
+
+embed_youtube("_PJvpq8uOZM",width = 500,
+height = 400,
+ratio = c("16by9"), frameborder=1)%>%
+    use_align("center")%>%
+  use_start_time("1m02")
+
+```
+
+</div>
+
+_Las informaciones suministradas en este articulo pueden ser ampliadas en el tablero interactivo “Mercado Laboral Juvenil” colgado en el portal de la Unidad Tecnica de Estudios Sobre Juventudes del Ministerio de la Juventud (https://juventud.gob.do/dashboard/)._
+
+
+
+
+
+
+
+```{js,  echo=FALSE, message=FALSE, warning=FALSE  }
+function filter_default(){
+  document.getElementById("Indicador_dscpdg").getElementsByClassName("selectized")[0].selectize.setValue("Tasa de desocupación",false) 
+  document.getElementById("Indicador_sbocpdg").getElementsByClassName("selectized")[0].selectize.setValue("Tasa de subocupación",false) 
+
+  document.getElementById("Indicador_ocpdg").getElementsByClassName("selectized")[0].selectize.setValue("Tasa de ocupación",false)
+  document.getElementById("Indicador_ingg").getElementsByClassName("selectized")[0].selectize.setValue("Salario nominal",false)
+  document.getElementById("Indicador_prtg").getElementsByClassName("selectized")[0].selectize.setValue("Tasa de participación",false)
+}
+
+$(document).ready(filter_default);
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
