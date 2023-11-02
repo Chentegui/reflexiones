@@ -7,7 +7,7 @@ execute:
   warning: false
   message: false
 project:
-   pre-render: script.R
+   output-dir: docs
 ---
 
 ## Reflexiones de Chente: el derecho a mentir
