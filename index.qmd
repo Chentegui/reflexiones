@@ -1,6 +1,7 @@
 ---
 format: 
   html:
+    theme: flatly
     css: style.css
 execute:
   echo: false
@@ -13,7 +14,7 @@ project:
 
 ## Reflexiones de Chente: el derecho a mentir
 
-Vicente Luis De pena P., M.Sc.VTyP, 31 de octubre 2023
+[Vicente Luis De pena P., M.Sc.VTyP, 31 de octubre 2023]{.my-name}
 
 Siempre he apostado por una manera innovadora de hacer política. No me refiero necesariamente a una "política diferente", sino a renovar sobre los cimientos de lo que ya existe, modificando de alguna manera la realidad actual. Considero esencial que los cambios puedan realizarse, tomando en cuenta lo ya establecido y construido. En este sentido, creo que existen dos elementos cruciales en la política actual que necesitamos proteger:
 

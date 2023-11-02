@@ -102,6 +102,19 @@ full_data <- bind_rows(data, .id = "scope") |>
     )
   )
 
+# Gráfico de barra
+# p <- full_data |>
+#   mutate(label = glue::glue("{desagragacion}: {scales::percent(valor, accuracy = 0.1)}")) |> 
+#   filter(scope == "General", indicador == "Tasa de ocupación") |>
+#   ggplot(aes(x = ano, y = valor, fill = desagragacion, text = label)) +
+#   geom_col(position = "dodge") +
+#   theme_minimal() +
+#   scale_fill_manual(values = c("#2e487f", "#8c9bb9", "#ff1616")) +
+#   theme(legend.position = "bottom") +
+#   labs(x = NULL, y = NULL, fill = "Grupo etario") +
+#   scale_y_continuous(labels = scales::percent)
+# 
+# ggplotly(p, tooltip = "text")
 
 
 
