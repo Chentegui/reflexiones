@@ -1,0 +1,11 @@
+p {
+  text-align: justify;
+}
+
+.caption {
+  text-align: center;
+  color: #003876;
+  display: block;
+  font-weight: 700;
+  font-style: italic;
+}

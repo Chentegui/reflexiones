@@ -12,7 +12,7 @@ output:
 ```{css,echo=FALSE}
 
 h1a {
-    font-family: MajritTx,serif;
+    font-family: MajritTx, serif;
     color: #003876;
 }
 
@@ -127,7 +127,7 @@ Joven <- readxl::read_excel("desempleo_Joven_adultosb.xlsx",
   mutate( key=as.character( row_number()))
 
 #_______________________________________________________________________________________________________________
-ocpdg<-dplyr:: filter(General, Indicador %in% c("Tasa de ocupación" ,  "Cantidad de ocupados" ))
+ocpdg <- dplyr::filter(General, Indicador %in% c("Tasa de ocupación" ,  "Cantidad de ocupados" ))
 ocpd1g<-SharedData$new(ocpdg, key=~key , group="ocupadosg")
 
 
