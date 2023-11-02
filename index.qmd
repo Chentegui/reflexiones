@@ -14,7 +14,6 @@ project:
 
 Vicente Luis De pena P., M.Sc.VTyP, 31 de octubre 2023
 
-
 Siempre he apostado por una manera innovadora de hacer política. No me refiero necesariamente a una "política diferente", sino a renovar sobre los cimientos de lo que ya existe, modificando de alguna manera la realidad actual. Considero esencial que los cambios puedan realizarse, tomando en cuenta lo ya establecido y construido. En este sentido, creo que existen dos elementos cruciales en la política actual que necesitamos proteger:
 
 * Primero, lo que nuestro presidente Luis Abinader describe como la característica más importante que debe tener un joven: ser honesto y no mentir con intenciones engañosas.
@@ -134,10 +133,19 @@ _Las informaciones suministradas en este articulo pueden ser ampliadas en el tab
 ```{js}
 $(document).ready(function(){
   let inputs = $(".crosstalk-input-select")
-  
+  const selection = {
+    ocupacion: "Tasa de ocupación",
+    desocupacion: "Tasa de desocupación",
+    informalidad: "Tasa de informalidad",
+    subocupacion: "Tasa de subocupación",
+    inactividad: "Tasa de inactividad",
+    participacion: "Tasa de participación",
+    salario: "Salario real"
+  }
 
   inputs.each(function() {
-    alert($(this).id)
+    const value = $(this).attr('id');
+    $(this).find(".selectized")[0].selectize.setValue(selection[value], false);
     $(this).find(".selectized")[0].selectize.removeOption("");
   })
 })

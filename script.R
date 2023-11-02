@@ -1,4 +1,3 @@
-
 # Paquetes ----------------------------------------------------------------
 library(dplyr)
 library(tidyr)
@@ -38,7 +37,7 @@ make_interactive_plot <- function(shared_data) {
     )
 }
 
-create_plot_widget <- function(data, categoria, selected_scope = "general") {
+create_plot_widget <- function(data, categoria, selected_scope = "General") {
   data_to_plot <- dplyr::filter(
     data,
     scope == selected_scope,
@@ -70,34 +69,27 @@ create_plot_widget <- function(data, categoria, selected_scope = "general") {
 # Data --------------------------------------------------------------------
 
 desagregacion_seleccionada <- c("Población sin categoría", "Familiar no remunerado", "Patrono o socio activo")
+sheets <- c("General", "Joven")
 
-general <- readxl::read_excel("desempleo_Joven_adultosb (1).xlsx", sheet = "General") |>
-  tidyr::pivot_longer(
-    cols = -c(Ano, Desagragacion),
-    names_to = "Indicador",
-    values_to = "Valor"
-  ) |>
-  filter(
-    !Desagragacion %in% desagregacion_seleccionada,
-    Ano %in% c(2015:2022)
-  ) |>
-  tibble::rowid_to_column(var = "key") |> 
-  janitor::clean_names()
+data <- map(
+  sheets,
+  ~readxl::read_excel("desempleo_Joven_adultosb (1).xlsx", sheet = .x) |>
+    tidyr::pivot_longer(
+      cols = -any_of(c("Ano", "Desagragacion", "Descripcion")),
+      names_to = "Indicador",
+      values_to = "Valor"
+    ) |>
+    filter(
+      !Desagragacion %in% desagregacion_seleccionada,
+      Ano %in% c(2015:2022)
+    ) |>
+    tibble::rowid_to_column(var = "key") |> 
+    janitor::clean_names()
+) |>
+  setNames(sheets)
 
-joven <- Joven <- readxl::read_excel("desempleo_Joven_adultosb (1).xlsx", sheet = "Joven") |>
-  tidyr::pivot_longer(
-    cols = -c(Ano, Desagragacion, Descripcion),
-    names_to = "Indicador",
-    values_to = "Valor"
-  ) |>
-  filter(
-    !Desagragacion %in% desagregacion_seleccionada,
-    Ano %in% c(2015:2022)
-  ) |>
-  tibble::rowid_to_column(var = "key") |>
-  janitor::clean_names()
 
-full_data <- bind_rows(general = general, joven = joven, .id = "scope") |>
+full_data <- bind_rows(data, .id = "scope") |>
   mutate(
     grupo_indicador = case_when(
       str_detect(indicador, " ocupa") ~ "ocupacion",
@@ -109,26 +101,6 @@ full_data <- bind_rows(general = general, joven = joven, .id = "scope") |>
       str_detect(indicador, "Salario") ~ "salario"
     )
   )
-
-# Gráficos ----------------------------------------------------------------
-
-
-
-ocupacion_general_data <- general |> 
-  dplyr::filter(indicador %in% c("Tasa de ocupación" ,  "Cantidad de ocupados" ))
-
-ocupacion_general_shared <- SharedData$new(ocupacion_general_data, key = ~key , group = "ocupadosg")
-ocupacion_general_plot   <- make_interactive_plot(ocupacion_general_shared)
-
-
-ocupacion_joven_data <- joven |> 
-  filter(indicador %in% c("Tasa de ocupación" ,  "Cantidad de ocupados"))
-
-ocupacion_joven_shared <- SharedData$new(ocupacion_joven_data, key = ~key,  group = "ocupadosj") 
-ocupacion_joven_plot   <- make_interactive_plot(ocupacion_joven_shared)
-
-
-
 
 
 
