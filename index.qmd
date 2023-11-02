@@ -7,9 +7,6 @@ execute:
   echo: false
   warning: false
   message: false
-project:
-  type: website
-  output-dir: docs
 ---
 
 ## Reflexiones de Chente: el derecho a mentir
