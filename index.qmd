@@ -27,20 +27,20 @@ Es una etapa donde se desata nuestra dualidad de sentimientos hacia la política
 
 [‘Hier encore’]{.caption}
 
-{{< video https://www.youtube.com/embed/6gqF3Tu5Ly4 >}}
+{{< video https://youtu.be/6gqF3Tu5Ly4?si=ZD5PrGkLTOL1prq-&t=30 >}}
 
 "Justo ayer tenía 20 años y perdí mi tiempo haciendo locuras que solo dejaron algunas arrugas en mi frente". Era una tristísima mirada al pasado, en la que el artista recordaba los tiempos en que tenía 20 años, y reconocía haber «desperdiciado su vida y sus años de juventud».
 
 ### Contexto
 
-¿Por qué les hablo de esto? Aquellos que me conocen saben que disfruto de una buena conversación, me gusta ese intercambio fluido de información que permite aprender de quienes, ya sea por casualidad o causalidad, cruzan palabras e ideas conmigo. Fue así que, el pasado miércoles 25 de octubre, decidí escuchar atentamente el debate de jóvenes políticos representantes de los partidos. Durante el mismo, uno de los participantes compartió una cifra que, a mi parecer, resultó bastante alarmante para la economía dominicana y la juventud. _(Supongo que cuando menciona CEPAL, se refiere a la [Comisión Económica para América Latina](https://www.cepal.org/sites/default/files/infographic/files/que_es_cepal_web_espanol.pdf))_.
+¿Por qué les hablo de esto? Aquellos que me conocen saben qu e disfruto de una buena conversación, me gusta ese intercambio fluido de información que permite aprender de quienes, ya sea por casualidad o causalidad, cruzan palabras e ideas conmigo. Fue así que, el pasado miércoles 25 de octubre, decidí escuchar atentamente el debate de jóvenes políticos representantes de los partidos. Durante el mismo, uno de los participantes compartió una cifra que, a mi parecer, resultó bastante alarmante para la economía dominicana y la juventud. _(Supongo que cuando menciona CEPAL, se refiere a la [Comisión Económica para América Latina](https://www.cepal.org/sites/default/files/infographic/files/que_es_cepal_web_espanol.pdf))_.
 
 #### Lo que ellos dicen que dice la CEPAL
 
 
 ["La CEPAL dice que el 29%, 30% de la juventud dominicana está desempleada. Encabezamos la tasa de desempleo en toda América Latina junto con México y también en el Caribe.”]{.caption}
 
-{{< video https://www.youtube.com/embed/j3bCYR7gszM >}}
+{{< video https://youtu.be/j3bCYR7gszM?si=ZVmNwA1u_OBRcn28&t=3295 >}}
 
 Este dato, más allá de ser alarmante, inicialmente nos pareció un posible error inocente, quizás producto del bombardeo constante de información y desinformación al que todos estamos sometidos. Nos pareció ser una muestra más de desinformación involuntaria. Desde nuestra llegada al Ministerio de la Juventud, mediante la recién creada Unidad Técnica de Estudios Sobre Juventudes, hemos trabajado sistemáticamente para visualizar y analizar todos los datos relevantes que impactan a la juventud, especialmente aquellos que la CEPAL identifica como _[“la llave maestra de la inclusión social juvenil: **_Educación y Empleo._**”](https://repositorio.cepal.org/items/9065b631-5bc6-4db1-96ce-b2e9a9c2af79)_ En este sentido, hemos logrado avances significativos.
 
@@ -124,8 +124,8 @@ Lo más fácil para un político es mentir; la filosofía, en numerosas ocasione
 
 A los jóvenes de cualquier partido, les digo, que no podemos seguir haciendo política basada en la manipulación de datos y en la construcción de realidades alternas, en las que nos consideramos Rocky Balboa y los demás charros. Debemos ser cautelosos para evitar que nuestra travesía por la política dominicana nos conduzca hacia una crisis existencial al estilo Aznavour. No abusemos más de nuestro supuesto derecho a mentir, pues ya los jóvenes identifican los niveles de las mentiras, y prefieren dejarlos hablando con el ECO y escuchar a:
 
-[‘MONACO’]{.caption}
-{{< video https://www.youtube.com/embed/_PJvpq8uOZM >}}
+[‘MONA... CO’]{.caption}
+{{< video https://youtu.be/_PJvpq8uOZM?si=BORCdDnRI9lxkwAY&t=64 >}}
 
 _Las informaciones suministradas en este articulo pueden ser ampliadas en el tablero interactivo “Mercado Laboral Juvenil” colgado en el portal de la Unidad Tecnica de Estudios Sobre Juventudes del Ministerio de la Juventud (https://juventud.gob.do/dashboard/)._
 
