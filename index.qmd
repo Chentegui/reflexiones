@@ -27,7 +27,16 @@ Es una etapa donde se desata nuestra dualidad de sentimientos hacia la política
 
 [‘Hier encore’]{.caption}
 
-{{< video https://youtu.be/6gqF3Tu5Ly4?si=ZD5PrGkLTOL1prq-&t=30 >}}
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe 
+    src="https://www.youtube.com/embed/6gqF3Tu5Ly4?start=30" 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+</div>
+
 
 "Justo ayer tenía 20 años y perdí mi tiempo haciendo locuras que solo dejaron algunas arrugas en mi frente". Era una tristísima mirada al pasado, en la que el artista recordaba los tiempos en que tenía 20 años, y reconocía haber «desperdiciado su vida y sus años de juventud».
 
@@ -125,7 +134,16 @@ Lo más fácil para un político es mentir; la filosofía, en numerosas ocasione
 A los jóvenes de cualquier partido, les digo, que no podemos seguir haciendo política basada en la manipulación de datos y en la construcción de realidades alternas, en las que nos consideramos Rocky Balboa y los demás charros. Debemos ser cautelosos para evitar que nuestra travesía por la política dominicana nos conduzca hacia una crisis existencial al estilo Aznavour. No abusemos más de nuestro supuesto derecho a mentir, pues ya los jóvenes identifican los niveles de las mentiras, y prefieren dejarlos hablando con el ECO y escuchar a:
 
 [‘MONA... CO’]{.caption}
-{{< video https://youtu.be/_PJvpq8uOZM?si=BORCdDnRI9lxkwAY&t=64 >}}
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe 
+    src="https://www.youtube.com/embed/_PJvpq8uOZM?start=62" 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    allowfullscreen>
+  </iframe>
+</div>
 
 _Las informaciones suministradas en este articulo pueden ser ampliadas en el tablero interactivo “Mercado Laboral Juvenil” colgado en el portal de la Unidad Tecnica de Estudios Sobre Juventudes del Ministerio de la Juventud (https://juventud.gob.do/dashboard/)._
 
