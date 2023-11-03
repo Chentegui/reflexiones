@@ -3,6 +3,10 @@ format:
   html:
     theme: flatly
     css: style.css
+    include-in-header:
+       - text: |
+          <meta property="og:site_name" content="Reflexiones de Chente" />
+          <meta name="shareaholic:title" content="Derecho a mentir" />
 execute:
   echo: false
   warning: false
