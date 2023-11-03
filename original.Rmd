@@ -416,7 +416,7 @@ Enfocándonos ahora en los datos. Para discernir "qué dice realmente la CEPAL",
 
 
 ```{r pressure, echo=FALSE, fig.cap="A caption", out.width = '100%'}
-knitr::include_graphics("tas_deseple_cepal1.png")
+knitr::include_graphics("plot_desempleo.png")
 ```
 
 

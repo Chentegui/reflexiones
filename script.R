@@ -73,7 +73,7 @@ sheets <- c("General", "Joven")
 
 data <- map(
   sheets,
-  ~readxl::read_excel("desempleo_Joven_adultosb (1).xlsx", sheet = .x) |>
+  ~readxl::read_excel("desempleo_Joven_adultosb.xlsx", sheet = .x) |>
     tidyr::pivot_longer(
       cols = -any_of(c("Ano", "Desagragacion", "Descripcion")),
       names_to = "Indicador",
